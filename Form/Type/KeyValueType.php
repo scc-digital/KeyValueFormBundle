@@ -1,21 +1,23 @@
 <?php
 
-namespace Burgov\Bundle\KeyValueFormBundle\Form\Type;
+declare(strict_types=1);
 
-use Burgov\Bundle\KeyValueFormBundle\Form\DataTransformer\HashToKeyValueArrayTransformer;
+namespace Scc\KeyValueFormBundle\Form\Type;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class KeyValueType extends AbstractType
+class TextGroupType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addModelTransformer(new HashToKeyValueArrayTransformer($options['use_container_object']));
+        $builder->addModelTransformer(new HashToKeyValueArrayTransformer());
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $e) {
             $input = $e->getData();
@@ -24,7 +26,7 @@ class KeyValueType extends AbstractType
                 return;
             }
 
-            $output = array();
+            $output = [];
 
             foreach ($input as $key => $value) {
                 $output[] = array(
@@ -37,26 +39,18 @@ class KeyValueType extends AbstractType
         }, 1);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $this->configureOptions($resolver);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        // check if Form component version 2.8+ is used
-        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
-        $resolver->setDefaults(array(
-            $isSf28 ? 'entry_type' : 'type' => $isSf28 ? __NAMESPACE__.'\KeyValueRowType' : 'burgov_key_value_row',
+        $resolver->setDefaults([
+            'entry_type' => KeyValueRowType::class,
             'allow_add' => true,
             'allow_delete' => true,
-            'key_type' => $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text',
-            'key_options' => array(),
-            'value_options' => array(),
+            'key_type' => TextType::class,
+            'key_options' => [],
+            'value_options' => [],
             'allowed_keys' => null,
             'use_container_object' => false,
-            $isSf28 ? 'entry_options' : 'options' => function(Options $options) {
+            'entry_options' => function(Options $options) {
                 return array(
                     'key_type' => $options['key_type'],
                     'value_type' => $options['value_type'],
@@ -65,31 +59,15 @@ class KeyValueType extends AbstractType
                     'allowed_keys' => $options['allowed_keys']
                 );
             }
-        ));
+        ]);
 
-        $resolver->setRequired(array('value_type'));
+        $resolver->setRequired(['value_type']);
 
-        if (method_exists($resolver, 'setDefined')) {
-            // Symfony 2.6+ API
-            $resolver->setAllowedTypes('allowed_keys', array('null', 'array'));
-        } else {
-            // Symfony <2.6 API
-            $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
-        }
+        $resolver->setAllowedTypes('allowed_keys', ['null', 'array']);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\CollectionType' : 'collection';
-    }
-
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'burgov_key_value';
+        return CollectionType::class;
     }
 }

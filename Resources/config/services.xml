@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="burgov_key_value_form.key_value_type" class="Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType">
-            <tag name="form.type" alias="burgov_key_value"/>
+        <service id="Scc\KeyValueFormBundle\Form\Type\KeyValueType" class="Scc\KeyValueFormBundle\Form\Type\KeyValueType">
+            <tag name="form.type"/>
         </service>
-        <service id="burgov_key_value_form.key_value_row_type" class="Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueRowType">
-            <tag name="form.type" alias="burgov_key_value_row"/>
+        <service id="Scc\KeyValueFormBundle\Form\Type\KeyValueRowType" class="Scc\KeyValueFormBundle\Form\Type\KeyValueRowType">
+            <tag name="form.type"/>
         </service>
     </services>
 
