@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Scc\KeyValueFormBundle\Form\Type;
+namespace Scc\KeyValueFormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;

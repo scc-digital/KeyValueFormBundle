@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Scc\KeyValueFormBundle\Form\Type;
 
+use Scc\KeyValueFormBundle\Form\DataTransformer\HashToKeyValueArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
