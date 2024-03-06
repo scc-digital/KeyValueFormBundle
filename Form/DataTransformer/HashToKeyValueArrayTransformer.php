@@ -9,7 +9,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class HashToKeyValueArrayTransformer implements DataTransformerInterface
 {
-    public function transform($value)
+    public function transform($value): mixed
     {
         return $value;
     }
