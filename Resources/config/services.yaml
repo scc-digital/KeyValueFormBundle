@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        
+    Scc\KeyValueFormBundle\Form\Type\KeyValueType: ~
+    Scc\KeyValueFormBundle\Form\Type\KeyValueRowType: ~
+    Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType:
+        alias: Scc\KeyValueFormBundle\Form\Type\KeyValueType
+    Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueRowType:
+        alias: Scc\KeyValueFormBundle\Form\Type\KeyValueRowType
+    
